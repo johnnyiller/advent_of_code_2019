@@ -2,15 +2,14 @@ wire_1="R990,U944,L921,U993,L64,U29,R899,D406,R841,U716,L32,U658,L830,D481,L441,
 wire_2="L994,U515,R163,U863,L343,U162,L875,D92,L483,D601,R79,D761,L389,U167,L145,U145,L247,U886,R61,U820,L584,D239,R402,U805,R956,U126,R615,D322,R431,D460,R397,D511,R805,D177,L778,U296,R599,U759,R40,U1,L422,U751,R94,U401,R504,U940,L564,U24,R595,U944,R815,U672,R787,D854,R579,D604,L62,U670,L516,U199,L639,D919,L485,U655,R391,U669,R772,D34,R868,D12,L108,U295,R701,D603,R493,U927,R29,D34,R499,U111,L87,U190,R884,D658,R474,D166,R921,U698,R592,U25,R710,D398,L26,U696,L432,D887,R469,U656,L428,D188,L543,D150,R160,U543,R743,U692,R618,D148,R956,U753,L175,D789,R897,U305,L137,D914,R330,D780,R744,D473,L754,U482,L975,D413,L698,U656,L177,U419,R13,D827,L67,D800,R369,U97,L34,D588,L41,D760,L164,U224,L921,D311,R489,U956,R277,U180,R724,U748,R785,U826,L426,D957,R303,U16,L729,U224,L712,U43,L280,D648,R987,D941,R154,D581,R876,U615,L480,D103,R636,D276,R948,U89,R434,D212,R837,D295,R532,D390,R374,D926,R911,D110,R258,U83,L955,U747,L925,D366,R571,U241,R628,D344,R919,U117,R337,D683,L720,U261,L124,D545,R979,D601,L906,D324,R441,U678,L978,U744,L472,D217,R799,U740,L77,U964,L278,U497,R441,U21,L37,U319,L24,D211,L44,U459,R35,D609,R900,D538,R397,D776,R629,D860,R519,D340,R168,U603,R46,U889,R897,D442,R997,U705,L82,D963,R941,U701,L347,D824,R269,U891,L569,D558,L867,U145,R121,D369,R542,U227,L198,U863,L755,U273,L734,D233,R578,U67,L821,U600,L203,D234,R695,U819,L639,D700,R295,D129,L612,U157,R212,U536,L968,U562,L999,D391,L231,U262,R334,D967,R463,U748,R842,D500,R860,U856,R263,D633,R460,D337,L880,U146,R910"
 
 def inc(numb):
-    n = int(numb) + 1
-    return n
+    return int(numb) + 1
 
 def dec(numb):
-    n = int(numb) - 1
-    return n
+    return int(numb) - 1
 
 op_map = { 'R': inc, 'U': inc, 'D': dec, 'L': dec }
 position_map = { 'R': 0, 'U': 1, 'D': 1, 'L': 0 }
+p0 = [0,0]
 
 def get_points(wire):
     points = [[0, 0]]
@@ -32,13 +31,19 @@ def intersection(lst1, lst2):
 def point_to_string(point):
     return f"{point[0]},{point[1]}"
 
+def string_to_point(point):
+    x, y = point.split(",")
+    return [int(x), int(y)]
+
 def dist(p1, p2):
-    d = abs(int(p1[0])-int(p2[0])) + abs(int(p1[1])-int(p2[1]))
-    return d
+    return abs(p1[0]-p2[0]) + abs(p1[1]-p2[1])
 
-wire_1_points = [point_to_string(p) for p in get_points(wire_1) if p != [0,0]]
-wire_2_points = [point_to_string(p) for p in get_points(wire_2) if p != [0,0]]
+def points_to_string(points):
+    return [point_to_string(p) for p in points if p != [0,0]]
 
-intersect = intersection(wire_1_points, wire_2_points)
-distances = [dist([0,0],p.split(",")) for p in intersect]
-print(min(distances))
+def point_intersection(w1, w2):
+    ints = intersection(points_to_string(get_points(w1)), points_to_string(get_points(w2)))
+    return [string_to_point(p) for p in ints]
+
+shortest = min([dist(p0,p1) for p1 in point_intersection(wire_1, wire_2)])
+print(shortest)
