@@ -7,13 +7,9 @@ HALT = 99
 input[1] = TWELVE
 input[2] = TWO
 
-
-
-
 FROM=0
 TO=len(input)-1
 STEP=4
-
 
 def add(a, b):
     return a + b
