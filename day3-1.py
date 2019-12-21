@@ -19,7 +19,7 @@ def get_points(wire):
        dist = int(move[1:])
        op = op_map[direction]
        position = position_map[direction]
-       for i in range(0, dist):
+       for i in range(dist):
            new_point = list(points[-1])
            new_point[position] = op(new_point[position])
            points.append(new_point)
